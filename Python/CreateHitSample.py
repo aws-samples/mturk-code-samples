@@ -37,7 +37,7 @@ user_balance = client.get_account_balance()
 # In Sandbox this always returns $10,000
 print "Your account balance is {}".format(user_balance['AvailableBalance'])
 
-questionSampleFile = open("sampleQuestion.xml", "r")
+questionSampleFile = open("my_question.xml", "r")
 questionSample = questionSampleFile.read()
 
 # Create a qualification with Locale In('US', 'CA') requirement attached
@@ -57,7 +57,7 @@ response = client.create_hit(
     MaxAssignments = 10,
     LifetimeInSeconds = 600,
     AssignmentDurationInSeconds = 600,
-    Reward ='0.01',
+    Reward ='0.20',
     Title = 'Answer a simple question',
     Keywords = 'question, answer, research',
     Description = 'Answer a simple question',

@@ -30,12 +30,12 @@ Use the Amazon Mechanical Turk Sandbox to publish test Human Intelligence Tasks 
 Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account.
 */
 
-// Connect to sandbox
-var sandbox = new AWS.Endpoint('mturk-requester-sandbox.us-east-1.amazonaws.com');
-var mturk = new AWS.MTurkRequester({endpoint: sandbox});
+var endpoint = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com';
+// Uncomment this line to use in production
+// endpoint = 'https://mturk-requester.us-east-1.amazonaws.com';
 
-// Uncomment the below to connect to the live marketplace
-// mturk = new AWS.MTurkRequester();
+// Connect to sandbox
+var mturk = new AWS.MTurk({ endpoint: endpoint });
 
 // Test your ability to connect to MTurk by checking your account balance
 mturk.getAccountBalance(function(err, data){
@@ -62,7 +62,7 @@ fs.readFile('my_question.xml', 'utf8', function (err,my_question) {
         MaxAssignments: 1,
         LifetimeInSeconds: 3600,
         AssignmentDurationInSeconds: 600,
-        Reward:'0.3',
+        Reward:'0.20',
         Question:my_question,
 
         // Add a qualification requirement that the Worker must be either in Canada or the US 

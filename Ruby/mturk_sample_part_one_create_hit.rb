@@ -68,7 +68,7 @@ my_html_question = p %{
         <body>
           <form name='mturk_form' method='post' id='mturk_form' action='https://www.mturk.com/mturk/externalSubmit'>
             <input type='hidden' value='' name='assignmentId' id='assignmentId'/>
-            <h1>Tell me how you really feel</h1>
+            <h1>This is a test question</h1>
             <p><textarea name='comment' cols='80' rows='3'></textarea></p>
             <p><input type='submit' id='submitButton' value='Submit' /></p>
           </form>

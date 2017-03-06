@@ -31,12 +31,12 @@ Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the sa
 // Add in the HITId below. See SubmitTask.js for generating a HIT
 var my_HITId = "YOUR_HIT_ID";
 
-// Connect to sandbox
-var sandbox = new AWS.Endpoint('mturk-requester-sandbox.us-east-1.amazonaws.com');
-mturk = new AWS.MTurkRequester({endpoint: sandbox});
+var endpoint = 'https://mturk-requester-sandbox.us-east-1.amazonaws.com';
+// Uncomment this line to use in production
+// endpoint = 'https://mturk-requester.us-east-1.amazonaws.com';
 
-// Uncomment the below to connect to the live marketplace
-// mturk = new AWS.MTurkRequester();
+// Connect to sandbox
+var mturk = new AWS.MTurk({ endpoint: endpoint });
 
 /* 
 To keep this example simple, we are assuming that there are fewer 

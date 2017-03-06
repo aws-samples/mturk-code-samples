@@ -34,12 +34,11 @@ client = boto3.client(
 
 # This HIT id should be the HIT you just created - see the CreateHITSample.py file for generating a HIT
 hit_id = 'YOUR_HIT_ID'
+
 hit = client.get_hit(HITId=hit_id)
 print 'Hit {} status: {}'.format(hit_id, hit['HIT']['HITStatus'])
 response = client.list_assignments_for_hit(
     HITId=hit_id,
-    SortDirection='Ascending', 
-    SortProperty='AcceptTime',
     AssignmentStatuses=['Submitted'], 
     MaxResults=10
 )
