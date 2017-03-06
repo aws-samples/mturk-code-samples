@@ -37,7 +37,7 @@ import com.amazonaws.services.mturk.model.ListAssignmentsForHITResult;
 public class ApproveAssignmentsSample {
 
 	// TODO Change this to your HIT ID - see CreateHITSample.java for generating a HIT
-	private static final String HIT_ID_TO_APPROVE = "YOUR_HIT_ID";
+	private static final String HIT_ID_TO_APPROVE = "HIT_ID_FROM_HIT_CREATION";
 
 	private static final String SANDBOX_ENDPOINT = "mturk-requester-sandbox.us-east-1.amazonaws.com";
 	private static final String SIGNING_REGION = "us-east-1";
@@ -47,9 +47,9 @@ public class ApproveAssignmentsSample {
 		sandboxApp.approveAssignment(HIT_ID_TO_APPROVE);
 	}
 
-	private final AmazonMechanicalTurk client;
+	private final AmazonMTurk client;
 
-	private ApproveAssignmentsSample(final AmazonMechanicalTurk client) {
+	private ApproveAssignmentsSample(final AmazonMTurk client) {
 		this.client = client;
 	}
 
@@ -57,23 +57,23 @@ public class ApproveAssignmentsSample {
 	Use the Amazon Mechanical Turk Sandbox to publish test Human Intelligence Tasks (HITs) without paying any money.
 	Make sure to sign up for a Sanbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account.
 	*/
-	private static AmazonMechanicalTurk getSandboxClient() {
-		AmazonMechanicalTurkClientBuilder builder = AmazonMechanicalTurkClientBuilder.standard();
+	private static AmazonMTurk getSandboxClient() {
+		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
 		builder.setEndpointConfiguration(new EndpointConfiguration(SANDBOX_ENDPOINT, SIGNING_REGION));
 		return builder.build();
 	}
 
 	private void approveAssignment(final String hitId) {
-
 		GetHITRequest getHITRequest = new GetHITRequest();
 		getHITRequest.setHITId(hitId);
 		GetHITResult getHITResult = client.getHIT(getHITRequest);
 		System.out.println("HIT " + hitId + " status: " + getHITResult.getHIT().getHITStatus());
 
-		// Get a maximum of 10 completed assignments for this HIT
 		ListAssignmentsForHITRequest listHITRequest = new ListAssignmentsForHITRequest();
 		listHITRequest.setHITId(hitId);
 		listHITRequest.setAssignmentStatuses(Collections.singletonList(AssignmentStatus.Submitted.name()));
+
+		// Get a maximum of 10 completed assignments for this HIT
 		listHITRequest.setMaxResults(10);
 		ListAssignmentsForHITResult listHITResult = client.listAssignmentsForHIT(listHITRequest);
 		List<Assignment> assignmentList = listHITResult.getAssignments();
@@ -86,12 +86,11 @@ public class ApproveAssignmentsSample {
 
 			// Approve the assignment
 			ApproveAssignmentRequest approveRequest = new ApproveAssignmentRequest();
-			
 			approveRequest.setAssignmentId(asn.getAssignmentId());
 			approveRequest.setRequesterFeedback("Good work, thank you!");
+			approveRequest.setOverrideRejection(false);
 			client.approveAssignment(approveRequest);
-			
-			System.out.println("The Assignment has been approved: " + asn.getAssignmentId());
+			System.out.println("Assignment has been approved: " + asn.getAssignmentId());
 		}
 	}
 }

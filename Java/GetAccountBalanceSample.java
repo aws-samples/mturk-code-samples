@@ -12,10 +12,8 @@
  */
 import java.io.IOException;
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration;
-
 import com.amazonaws.services.mturk.AmazonMTurk;
 import com.amazonaws.services.mturk.AmazonMTurkClientBuilder;
-
 import com.amazonaws.services.mturk.model.GetAccountBalanceRequest;
 import com.amazonaws.services.mturk.model.GetAccountBalanceResult;
 
@@ -41,7 +39,7 @@ public class GetAccountBalanceSample {
 		*/
 		final GetAccountBalanceSample sandboxApp = new GetAccountBalanceSample(getSandboxClient());
 		final String sandboxBalance = sandboxApp.getAccountBalance();
-		
+
 		// In Sandbox this will always return $10,000
 		System.out.println("SANDBOX - Your account balance is " + sandboxBalance);
 
@@ -51,20 +49,20 @@ public class GetAccountBalanceSample {
 		System.out.println("PRODUCTION - Your account balance is " + productionBalance);
 	}
 
-	private final AmazonMechanicalTurk client;
+	private final AmazonMTurk client;
 
-	private GetAccountBalanceSample(final AmazonMechanicalTurk client) {
+	private GetAccountBalanceSample(final AmazonMTurk client) {
 		this.client = client;
 	}
 
-	private static AmazonMechanicalTurk getProductionClient() {
-		AmazonMechanicalTurkClientBuilder builder = AmazonMechanicalTurkClientBuilder.standard();
+	private static AmazonMTurk getProductionClient() {
+		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
 		builder.setEndpointConfiguration(new EndpointConfiguration(PRODUCTION_ENDPOINT, SIGNING_REGION));
 		return builder.build();
 	}
 
-	private static AmazonMechanicalTurk getSandboxClient() {
-		AmazonMechanicalTurkClientBuilder builder = AmazonMechanicalTurkClientBuilder.standard();
+	private static AmazonMTurk getSandboxClient() {
+		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
 		builder.setEndpointConfiguration(new EndpointConfiguration(SANDBOX_ENDPOINT, SIGNING_REGION));
 		return builder.build();
 	}

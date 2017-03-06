@@ -24,7 +24,6 @@ import com.amazonaws.services.mturk.model.Comparator;
 import com.amazonaws.services.mturk.model.CreateHITRequest;
 import com.amazonaws.services.mturk.model.CreateHITResult;
 import com.amazonaws.services.mturk.model.Locale;
-import com.amazonaws.services.mturk.model.Price;
 import com.amazonaws.services.mturk.model.QualificationRequirement;
 
 /* 
@@ -38,6 +37,8 @@ import com.amazonaws.services.mturk.model.QualificationRequirement;
 
 public class CreateHITSample {
 
+	private static final String QUESTION_XML_FILE_NAME = "my_question.xml";
+	
 	private static final String SANDBOX_ENDPOINT = "mturk-requester-sandbox.us-east-1.amazonaws.com";
 	private static final String SIGNING_REGION = "us-east-1";
 
@@ -45,23 +46,23 @@ public class CreateHITSample {
 		/* 
 		Use the Amazon Mechanical Turk Sandbox to publish test Human Intelligence Tasks (HITs) without paying any money.
 		Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account.
-		*/
+		*/		
 		final CreateHITSample sandboxApp = new CreateHITSample(getSandboxClient());
-		final HITInfo hitInfo = sandboxApp.createHIT("my_question.xml");
+		final HITInfo hitInfo = sandboxApp.createHIT(QUESTION_XML_FILE_NAME);
 
 		System.out.println("Your HIT has been created. You can see it at this link:");
 		System.out.println("https://workersandbox.mturk.com/mturk/preview?groupId=" + hitInfo.getHITTypeId());
 		System.out.println("Your HIT ID is: " + hitInfo.getHITId());
 	}
 
-	private final AmazonMechanicalTurk client;
+	private final AmazonMTurk client;
 
-	private CreateHITSample(final AmazonMechanicalTurk client) {
+	private CreateHITSample(final AmazonMTurk client) {
 		this.client = client;
 	}
 
-	private static AmazonMechanicalTurk getSandboxClient() {
-		AmazonMechanicalTurkClientBuilder builder = AmazonMechanicalTurkClientBuilder.standard();
+	private static AmazonMTurk getSandboxClient() {
+		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
 		builder.setEndpointConfiguration(new EndpointConfiguration(SANDBOX_ENDPOINT, SIGNING_REGION));
 		return builder.build();
 	}
@@ -85,9 +86,6 @@ public class CreateHITSample {
 	}
 
 	private HITInfo createHIT(final String questionXmlFile) throws IOException {
-		Price rewardPrice = new Price();
-		rewardPrice.setAmount("0.01");
-		rewardPrice.setCurrencyCode("USD");
 
 		// QualificationRequirement: Locale IN (US, CA)
 		QualificationRequirement localeRequirement = new QualificationRequirement();
@@ -106,7 +104,8 @@ public class CreateHITSample {
 		request.setMaxAssignments(10);
 		request.setLifetimeInSeconds(600L);
 		request.setAssignmentDurationInSeconds(600L);
-		request.setReward(rewardPrice);
+		// Reward is a USD dollar amount - USD$0.20 in the example below
+		request.setReward("0.20");
 		request.setTitle("Answer a simple question");
 		request.setKeywords("question, answer, research");
 		request.setDescription("Answer a simple question");
