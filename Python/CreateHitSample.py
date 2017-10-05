@@ -35,13 +35,13 @@ environments = {
             "endpoint": "https://mturk-requester.us-east-1.amazonaws.com",
             "preview": "https://www.mturk.com/mturk/preview",
             "manage": "https://requester.mturk.com/mturk/manageHITs",
-            "reward": "0.20"
+            "reward": "0.00"
         },
         "sandbox": {
             "endpoint": "https://mturk-requester-sandbox.us-east-1.amazonaws.com",
             "preview": "https://workersandbox.mturk.com/mturk/preview",
             "manage": "https://requestersandbox.mturk.com/mturk/manageHITs",
-            "reward": "0.20"
+            "reward": "0.11"
         },
 }
 mturk_environment = environments["live"] if create_hits_in_live else environments["sandbox"]
@@ -62,13 +62,12 @@ user_balance = client.get_account_balance()
 print "Your account balance is {}".format(user_balance['AvailableBalance'])
 
 # The question we ask the workers is contained in this file.
-questionSampleFile = open("my_question.xml", "r")
-questionSample = questionSampleFile.read()
+question_sample = open("my_question.xml", "r").read()
 
 # Example of using qualification to restrict responses to Workers who have had
 # at least 80% of their assignments approved. See:
 # http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_QualificationRequirementDataStructureArticle.html#ApiReference_QualificationType-IDs
-workerRequirements = [{
+worker_requirements = [{
     'QualificationTypeId': '000000000000000000L0',
     'Comparator': 'GreaterThanOrEqualTo',
     'IntegerValues': [80],
@@ -84,8 +83,8 @@ response = client.create_hit(
     Title='Answer a simple question',
     Keywords='question, answer, research',
     Description='Answer a simple question. Created from mturk-code-samples.',
-    Question=questionSample,
-    QualificationRequirements=workerRequirements,
+    Question=question_sample,
+    QualificationRequirements=worker_requirements,
 )
 
 # The response included several fields that will be helpful later
@@ -94,7 +93,7 @@ hit_id = response['HIT']['HITId']
 print "\nCreated HIT: {}".format(hit_id)
 
 print "\nYou can work the HIT here:"
-print mturk_environment['preview'] + "?/groupId={}".format(hit_type_id)
+print mturk_environment['preview'] + "?groupId={}".format(hit_type_id)
 
 print "\nAnd see results here:"
 print mturk_environment['manage']
