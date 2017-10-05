@@ -20,7 +20,7 @@ from xml.dom.minidom import parseString
 # https://blog.mturk.com/how-to-use-iam-to-control-api-access-to-your-mturk-account-76fe2c2e66e2
 #
 # Follow AWS best practices for setting up credentials here:
-# http://boto3.readthedocs.io/en/latest/guide/configuration.html 
+# http://boto3.readthedocs.io/en/latest/guide/configuration.html
 
 # Use the Amazon Mechanical Turk Sandbox to publish test Human Intelligence Tasks (HITs) without paying any money.
 # Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account.
@@ -64,15 +64,15 @@ hit = client.get_hit(HITId=hit_id)
 print 'Hit {} status: {}'.format(hit_id, hit['HIT']['HITStatus'])
 response = client.list_assignments_for_hit(
     HITId=hit_id,
-    AssignmentStatuses=['Submitted','Approved'], 
-    MaxResults=10
+    AssignmentStatuses=['Submitted', 'Approved'],
+    MaxResults=10,
 )
 
 assignments = response['Assignments']
 print 'The number of submitted assignments is {}'.format(len(assignments))
 for assignment in assignments:
-    WorkerId = assignment['WorkerId']
-    assignmentId = assignment['AssignmentId']
+    worker_id = assignment['WorkerId']
+    assignment_id = assignment['AssignmentId']
     answer_xml = parseString(assignment['Answer'])
 
     # the answer is an xml document. we pull out the value of the first
@@ -81,13 +81,13 @@ for assignment in assignments:
     # See https://stackoverflow.com/questions/317413
     only_answer = " ".join(t.nodeValue for t in answer.childNodes if t.nodeType == t.TEXT_NODE)
 
-    print 'The Worker with ID {} submitted assignment {} and gave the answer "{}"'.format(WorkerId,assignmentId, only_answer)
+    print 'The Worker with ID {} submitted assignment {} and gave the answer "{}"'.format(worker_id, assignment_id, only_answer)
 
     # Approve the Assignment (if it hasn't already been approved)
     if assignment['AssignmentStatus'] == 'Submitted':
-    	print 'Approving Assignment {}'.format(assignmentId)
-    	client.approve_assignment(
-            AssignmentId=assignmentId,
+        print 'Approving Assignment {}'.format(assignment_id)
+        client.approve_assignment(
+            AssignmentId=assignment_id,
             RequesterFeedback='good',
             OverrideRejection=False,
-    	)
+        )
