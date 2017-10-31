@@ -41,7 +41,7 @@ var mturk = new AWS.MTurk({ endpoint: endpoint });
 
 /**
  * To keep this example simple, we are assuming that there are fewer
- * than 100 results and there is no need to iterate through pages of results
+ * than 10 results and there is no need to iterate through pages of results
  */
 
 mturk.listAssignmentsForHIT({HITId: myHITId}, function (err, assignmentsForHIT) {
