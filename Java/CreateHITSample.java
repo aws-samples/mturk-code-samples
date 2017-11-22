@@ -38,20 +38,32 @@ import com.amazonaws.services.mturk.model.QualificationRequirement;
 public class CreateHITSample {
 
 	private static final String QUESTION_XML_FILE_NAME = "my_question.xml";
-	
+
 	private static final String SANDBOX_ENDPOINT = "mturk-requester-sandbox.us-east-1.amazonaws.com";
+	private static final String PROD_ENDPOINT = "https://mturk-requester.us-east-1.amazonaws.com";
 	private static final String SIGNING_REGION = "us-east-1";
 
 	public static void main(final String[] argv) throws IOException {
 		/* 
 		Use the Amazon Mechanical Turk Sandbox to publish test Human Intelligence Tasks (HITs) without paying any money.
-		Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account.
-		*/		
+		Sign up for a Sandbox account at https://requestersandbox.mturk.com/ with the same credentials as your main MTurk account
+		
+		Switch to getProdClient() in production. 
+		Uncomment line 60, 61, & 66 below to create your HIT in production.
+			
+		*/
+		
 		final CreateHITSample sandboxApp = new CreateHITSample(getSandboxClient());
 		final HITInfo hitInfo = sandboxApp.createHIT(QUESTION_XML_FILE_NAME);
-
+		
+		// final CreateHITSample prodApp = new CreateHITSample(getProdClient());
+		// final HITInfo hitInfo = prodApp.createHIT(QUESTION_XML_FILE_NAME);
+				
 		System.out.println("Your HIT has been created. You can see it at this link:");
-		System.out.println("https://workersandbox.mturk.com/mturk/preview?groupId=" + hitInfo.getHITTypeId());
+		
+		System.out.println("https://workersandbox.mturk.com/mturk/preview?groupId=" + hitInfo.getHITTypeId());	
+		// System.out.println("https://www.mturk.com/mturk/preview?groupId=" + hitInfo.getHITTypeId());
+		
 		System.out.println("Your HIT ID is: " + hitInfo.getHITId());
 	}
 
@@ -64,6 +76,12 @@ public class CreateHITSample {
 	private static AmazonMTurk getSandboxClient() {
 		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
 		builder.setEndpointConfiguration(new EndpointConfiguration(SANDBOX_ENDPOINT, SIGNING_REGION));
+		return builder.build();
+	}
+	
+	private static AmazonMTurk getProdClient() {
+		AmazonMTurkClientBuilder builder = AmazonMTurkClientBuilder.standard();
+		builder.setEndpointConfiguration(new EndpointConfiguration(PROD_ENDPOINT, SIGNING_REGION));
 		return builder.build();
 	}
 
