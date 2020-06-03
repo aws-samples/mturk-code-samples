@@ -46,7 +46,7 @@ mturk.getAccountBalance(function (err, data) {
         // Sandbox balance check will always return $10,000
         console.log('I have ' + data.AvailableBalance + ' in my account.');
     }
-})
+});
 
 /* 
 Publish a new HIT to the Sandbox marketplace start by reading in the HTML markup specifying your task from a seperate file (my_question.xml). To learn more about the HTML question type, see here: http://docs.aws.amazon.com/AWSMechTurk/latest/AWSMturkAPI/ApiReference_HTMLQuestionArticle.html
