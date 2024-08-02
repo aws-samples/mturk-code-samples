@@ -61,7 +61,7 @@ client = session.client(
 )
 
 hit = client.get_hit(HITId=hit_id)
-print 'Hit {} status: {}'.format(hit_id, hit['HIT']['HITStatus'])
+print(f"Hit {hit_id} status: {hit['HIT']['HITStatus']}")
 response = client.list_assignments_for_hit(
     HITId=hit_id,
     AssignmentStatuses=['Submitted', 'Approved'],
@@ -69,7 +69,7 @@ response = client.list_assignments_for_hit(
 )
 
 assignments = response['Assignments']
-print 'The number of submitted assignments is {}'.format(len(assignments))
+print(f'The number of submitted assignments is {len(assignments)}')
 for assignment in assignments:
     worker_id = assignment['WorkerId']
     assignment_id = assignment['AssignmentId']
@@ -81,11 +81,11 @@ for assignment in assignments:
     # See https://stackoverflow.com/questions/317413
     only_answer = " ".join(t.nodeValue for t in answer.childNodes if t.nodeType == t.TEXT_NODE)
 
-    print 'The Worker with ID {} submitted assignment {} and gave the answer "{}"'.format(worker_id, assignment_id, only_answer)
+    print(f'The Worker with ID {worker_id} submitted assignment {assignment_id} and gave the answer "{only_answer}"')
 
     # Approve the Assignment (if it hasn't already been approved)
     if assignment['AssignmentStatus'] == 'Submitted':
-        print 'Approving Assignment {}'.format(assignment_id)
+        print(f'Approving Assignment {assignment_id}')
         client.approve_assignment(
             AssignmentId=assignment_id,
             RequesterFeedback='good',

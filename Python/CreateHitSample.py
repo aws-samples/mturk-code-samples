@@ -59,7 +59,7 @@ client = session.client(
 user_balance = client.get_account_balance()
 
 # In Sandbox this always returns $10,000. In live, it will be your acutal balance.
-print "Your account balance is {}".format(user_balance['AvailableBalance'])
+print(f"Your account balance is {user_balance['AvailableBalance']}")
 
 # The question we ask the workers is contained in this file.
 question_sample = open("my_question.xml", "r").read()
@@ -90,10 +90,10 @@ response = client.create_hit(
 # The response included several fields that will be helpful later
 hit_type_id = response['HIT']['HITTypeId']
 hit_id = response['HIT']['HITId']
-print "\nCreated HIT: {}".format(hit_id)
+print(f"Created HIT: {hit_id}")
 
-print "\nYou can work the HIT here:"
-print mturk_environment['preview'] + "?groupId={}".format(hit_type_id)
+print("You can work the HIT here:")
+print(f"{mturk_environment['preview']}?groupId={hit_type_id}")
 
-print "\nAnd see results here:"
-print mturk_environment['manage']
+print("\nAnd see results here:")
+print(mturk_environment['manage'])
